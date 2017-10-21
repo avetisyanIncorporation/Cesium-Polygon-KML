@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document>
+  <name>Example</name>
+  <open>0</open>
+  <Style id="myPolygonExample">
+    <PolyStyle>
+      <color>ffff0000</color>
+      <colorMode>normal</colorMode>
+    </PolyStyle>
+  </Style>
+  <Placemark>
+    <name>polygon</name>
+    <styleUrl>#myPolygonExample</styleUrl>
+    <Polygon>
+      <extrude>1</extrude>
+      <altitudeMode>relativeToGround</altitudeMode>
+      <outerBoundaryIs>
+        <LinearRing>
+          <coordinates>
+		  45.3662784465226,40.81884427772081,50
+		  45.3652480684771,40.81926777010555,50
+		  45.365640222455,40.81986126286519,50
+		  45.36666937925,40.81942987753481,50
+		  45.3662784465226,40.81884427772081,50
+          </coordinates>
+        </LinearRing>
+      </outerBoundaryIs>
+    </Polygon>
+  </Placemark>
+</Document>
+</kml>
