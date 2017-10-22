@@ -9,6 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
   <title>Hello World!</title>
   <script src="../Build/Cesium/Cesium.js"></script>
+  <script src="Initialize.js"></script>
   <style>
       @import url(../Build/Cesium/Widgets/widgets.css);
       html, body, #cesiumContainer {
@@ -19,24 +20,9 @@
 <body>
   <div id="cesiumContainer"></div>
   <script>
-	var viewer = new Cesium.Viewer('cesiumContainer');
-	
-	viewer.dataSources.add(Cesium.KmlDataSource.load('z1.kml',
-		 {
-			  camera: viewer.scene.camera,
-			  canvas: viewer.scene.canvas,
-			  clampToGround: true,
-		 })
-	);
-
-	var deg1 = 45.3662784465226;
-	var deg2 = 40.81884427772081;
-
-	setTimeout(function() {
-			viewer.camera.flyTo({
-			destination : Cesium.Cartesian3.fromDegrees(deg1, deg2, 1500.0)
-		});
-		}, 1100);
+  
+    var viewer = new Cesium.Viewer('cesiumContainer');
+	init(viewer);
 	
   </script>
 </body>
