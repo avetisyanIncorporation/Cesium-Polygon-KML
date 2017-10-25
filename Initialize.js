@@ -21,6 +21,8 @@ try{
 		
             var myPolygon = dataSource.entities.getById('myPolygonExample');
 			
+			//myPolygon.position = new Cesium.Cartesian3.fromDegrees(1,2,3);
+			
         });
 	
 	setTimeout(function() {
@@ -45,7 +47,7 @@ try{
 		
 	//var rectangle = new Cesium.Rectangle(45.3652480684771,40.81884427772081,45.36666937925,40.81986126286519);
 	var rectangle = new Cesium.Rectangle(0.79, 0.71, 0.79, 0.71);
-	var terrainHeight = terrainData.interpolateHeight(rectangle, lon, lat);
+	var terrainHeight = terrainData.interpolateHeight(rectangle, 0.79, 0.71);
 	
 	alert(terrainHeight);*/
 	
