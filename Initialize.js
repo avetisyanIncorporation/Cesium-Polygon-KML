@@ -13,46 +13,39 @@ try{
 			canvas: viewer.scene.canvas,
 			clampToGround : true
 		});
-		
-	
 	viewer.dataSources.add(polygon);
 	
-	polygon.then(function(dataSource){
+	
+	polygon.then(dataSource =>{
+			
+		var myPolygon = dataSource.entities.getById('myPolygonExample');
+		//var myPolygon = dataSource.entities.values[0];		
+		var position = myPolygon.polygon.hierarchy.getValue().positions[0];
 		
-            var myPolygon = dataSource.entities.getById('myPolygonExample');
-			
-			//myPolygon.position = new Cesium.Cartesian3.fromDegrees(1,2,3);
-			
-        });
+		//alert(position);
+		//alert(Cesium.Cartographic.fromCartesian(Cesium.Cartesian3.fromDegrees(position.x,position.y)));
+		//alert(Cesium.Cartographic.fromDegrees(position.x,position.y).longitude );
+		
+	});
 	
 	setTimeout(function() {
-		viewer.zoomTo(polygon, new Cesium.HeadingPitchRange(0, -100, 1500)) }, 1500);
-
-	
-	
-	/*var lon = 45.3662784465226;
-	var lat = 40.81884427772081;
-	var buffer = [
-	[45.3662784465226,40.81884427772081],
-	[45.365640222455,40.81986126286519],
-	[45.3652480684771,40.81926777010555],
-	[45.36666937925,40.81942987753481]
-	];
-	var heightBuffer = new Uint16Array(buffer,0);
-	var terrainData = new Cesium.HeightmapTerrainData({
-	  buffer : heightBuffer,
-	  width : lon,
-	  height : lat
-	});
+		viewer.zoomTo(polygon, new Cesium.HeadingPitchRange(0, -100, 1500)) 
+		}, 1500);
 		
-	//var rectangle = new Cesium.Rectangle(45.3652480684771,40.81884427772081,45.36666937925,40.81986126286519);
-	var rectangle = new Cesium.Rectangle(0.79, 0.71, 0.79, 0.71);
-	var terrainHeight = terrainData.interpolateHeight(rectangle, 0.79, 0.71);
+	var positions = [
+		Cesium.Cartographic.fromDegrees(45, 40)
+	];		
 	
-	alert(terrainHeight);*/
+	var ourHeight = 10;
+	var newHeight;
 	
+	var promise = Cesium.sampleTerrainMostDetailed(viewer.terrainProvider, positions);
+	Cesium.when(promise, function(updatedPositions) {
+		newHeight = updatedPositions[0].height + ourHeight;
+		alert(newHeight);
+	});
 	
-	
+	//выставить наш полигон на высоту newHeight
 	
 }catch(e){
 	alert(e);
