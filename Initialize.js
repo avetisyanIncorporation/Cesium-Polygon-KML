@@ -15,17 +15,12 @@ try{
 		});
 	viewer.dataSources.add(polygon);
 	
-	
 	polygon.then(dataSource =>{
 			
 		var myPolygon = dataSource.entities.getById('myPolygonExample');
 		//var myPolygon = dataSource.entities.values[0];		
 		var position = myPolygon.polygon.hierarchy.getValue().positions[0];
-		
-		//alert(position);
-		//alert(Cesium.Cartographic.fromCartesian(Cesium.Cartesian3.fromDegrees(position.x,position.y)));
-		//alert(Cesium.Cartographic.fromDegrees(position.x,position.y).longitude );
-		
+		//alert(Cesium.Cartographic.fromDegrees(position.x,position.y));
 	});
 	
 	setTimeout(function() {
