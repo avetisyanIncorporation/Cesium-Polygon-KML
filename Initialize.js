@@ -33,22 +33,22 @@ function init(viewer){
 	
 	setTimeout(function() {
 	
-	for(var i = 0; i < data.coords.length; i++){
-		data.oldHeights.push(data.coords[i].height);
-	}
-	
-	var promise = Cesium.sampleTerrainMostDetailed(viewer.terrainProvider, data.coords);
-	Cesium.when(promise, function(updatedPositions) {
-		for(var i = 0; i < updatedPositions.length; i++){
-			data.coords[i].height += data.oldHeights[i];
+		for(var i = 0; i < data.coords.length; i++){
+			data.oldHeights.push(data.coords[i].height);
 		}
-	});
-	
-	setTimeout(function() {
 		
-		data.showCoords();
+		var promise = Cesium.sampleTerrainMostDetailed(viewer.terrainProvider, data.coords);
+		Cesium.when(promise, function(updatedPositions) {
+			for(var i = 0; i < updatedPositions.length; i++){
+				data.coords[i].height += data.oldHeights[i];
+			}
+		});
 		
-	},100);
+		setTimeout(function() {
+			
+			data.showCoords();
+			
+		},100);
 	
 	},500);
 	
