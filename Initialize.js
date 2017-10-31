@@ -1,5 +1,4 @@
 function init(viewer){
-try{
 	
 	viewer.terrainProvider = new Cesium.CesiumTerrainProvider({
 		url : 'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles',
@@ -15,38 +14,39 @@ try{
 		});
 	viewer.dataSources.add(polygon);
 	
-	var coords=[];
+	var data = {
+		coords: [],
+		oldHeights: [],
+		showCoords: function() {
+			if(this.coords.length != 0){
+				alert( this.coords );
+			}
+		}
+	};
 	
 	polygon.then(dataSource =>{
 		var myPolygon = dataSource.entities.getById('myPolygonExample');
-		//var myPolygon = dataSource.entities.values[0];		
 		var positions = myPolygon.polygon.hierarchy.getValue().positions;
-		coords = Cesium.Ellipsoid.WGS84.cartesianArrayToCartographicArray(positions);
-		
-		alert(coords);
+		data.coords = Cesium.Ellipsoid.WGS84.cartesianArrayToCartographicArray(positions);
+		data.showCoords();
 	});
 	
 	setTimeout(function() {
 	
-	//var ourHeight = 100;
-	var oldHeights=[];
-	for(var i = 0; i < coords.length; i++){
-		oldHeights.push(coords[i].height);
+	for(var i = 0; i < data.coords.length; i++){
+		data.oldHeights.push(data.coords[i].height);
 	}
 	
-	var promise = Cesium.sampleTerrainMostDetailed(viewer.terrainProvider, coords);
+	var promise = Cesium.sampleTerrainMostDetailed(viewer.terrainProvider, data.coords);
 	Cesium.when(promise, function(updatedPositions) {
-		
 		for(var i = 0; i < updatedPositions.length; i++){
-			coords[i].height += oldHeights[i];
-			//newHeight = updatedPositions[i].height + ourHeight;
+			data.coords[i].height += data.oldHeights[i];
 		}
 	});
 	
 	setTimeout(function() {
 		
-		alert(coords);
-		//выставить наш полигон на высоту newHeight
+		data.showCoords();
 		
 	},100);
 	
@@ -54,10 +54,6 @@ try{
 	
 	setTimeout(function() {
 		viewer.zoomTo(polygon, new Cesium.HeadingPitchRange(0, -100, 1500)) 
-		}, 1500);
-	
-}catch(e){
-	alert(e);
-}
+	}, 1500);
 
 };
