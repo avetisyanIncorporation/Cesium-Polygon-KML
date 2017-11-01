@@ -1,5 +1,5 @@
 function init(viewer){
-	
+
 	viewer.terrainProvider = new Cesium.CesiumTerrainProvider({
 		url : 'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles',
 		requestWaterMask : true,
@@ -16,41 +16,40 @@ function init(viewer){
 	
 	var data = {
 		coords: [],
-		oldHeights: []
+		oldHeights: [],
+		newHeights: []
 	};
 	
-	polygon.then(dataSource =>{
+	polygon
+	.then(dataSource =>{
 		var myPolygon = dataSource.entities.getById('myPolygonExample');
 		var positions = myPolygon.polygon.hierarchy.getValue().positions;
 		data.coords = Cesium.Ellipsoid.WGS84.cartesianArrayToCartographicArray(positions);
-	});
-	
-	setTimeout(function() {
-	
 		for(var i = 0; i < data.coords.length; i++){
 			data.oldHeights.push(data.coords[i].height);
 		}
-		
+		return polygon;
+	})
+	.then( () => {
 		var promise = Cesium.sampleTerrainMostDetailed(viewer.terrainProvider, data.coords);
-		Cesium.when(promise, function(updatedPositions) {
-			for(var i = 0; i < updatedPositions.length; i++){
-				data.coords[i].height += data.oldHeights[i];
-			}
-		});
-		
-		setTimeout(function() {
-			
-			polygon.then(dataSource =>{
-				var myPolygon = dataSource.entities.getById('myPolygonExample');
-				myPolygon.polygon.hierarchy.getValue().positions = Cesium.Ellipsoid.WGS84.cartographicArrayToCartesianArray(data.coords);
-			});
-			
-		},200);
+		return promise;
+	})
+	.then( () => {
+		for(var i = 0; i < data.coords.length; i++){
+			data.newHeights.push(data.coords[i].height);
+		}
+		return polygon;
+	})
+	.then(dataSource => {
+		for(var i = 0; i < data.coords.length; i++){
+			data.coords[i].height += data.oldHeights[i];
+		}
+		var myPolygon = dataSource.entities.getById('myPolygonExample');
+		myPolygon.polygon.hierarchy.getValue().positions = Cesium.Ellipsoid.WGS84.cartographicArrayToCartesianArray(data.coords);
+		return polygon;
+	})
+	.then( () => {
+		viewer.zoomTo(polygon, new Cesium.HeadingPitchRange(0, -100, 1500));
+	});
 	
-	},500);
-	
-	setTimeout(function() {
-		viewer.zoomTo(polygon, new Cesium.HeadingPitchRange(0, -100, 1500)) 
-	}, 1500);
-
 };
