@@ -16,19 +16,13 @@ function init(viewer){
 	
 	var data = {
 		coords: [],
-		oldHeights: [],
-		showCoords: function() {
-			if(this.coords.length != 0){
-				alert( this.coords );
-			}
-		}
+		oldHeights: []
 	};
 	
 	polygon.then(dataSource =>{
 		var myPolygon = dataSource.entities.getById('myPolygonExample');
 		var positions = myPolygon.polygon.hierarchy.getValue().positions;
 		data.coords = Cesium.Ellipsoid.WGS84.cartesianArrayToCartographicArray(positions);
-		data.showCoords();
 	});
 	
 	setTimeout(function() {
@@ -46,9 +40,12 @@ function init(viewer){
 		
 		setTimeout(function() {
 			
-			data.showCoords();
+			polygon.then(dataSource =>{
+				var myPolygon = dataSource.entities.getById('myPolygonExample');
+				myPolygon.polygon.hierarchy.getValue().positions = Cesium.Ellipsoid.WGS84.cartographicArrayToCartesianArray(data.coords);
+			});
 			
-		},100);
+		},200);
 	
 	},500);
 	
