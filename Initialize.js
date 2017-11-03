@@ -16,8 +16,7 @@ function init(viewer){
 	
 	var data = {
 		coords: [],
-		oldHeights: [],
-		newHeights: []
+		oldHeights: []
 	};
 	
 	polygon
@@ -35,9 +34,6 @@ function init(viewer){
 		return promise;
 	})
 	.then( () => {
-		for(var i = 0; i < data.coords.length; i++){
-			data.newHeights.push(data.coords[i].height);
-		}
 		return polygon;
 	})
 	.then(dataSource => {
