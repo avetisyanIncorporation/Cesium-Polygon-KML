@@ -24,7 +24,7 @@ function init(viewer){
 		var myPolygon = dataSource.entities.getById('myPolygonExample');
 		var positions = myPolygon.polygon.hierarchy.getValue().positions;
 		data.coords = Cesium.Ellipsoid.WGS84.cartesianArrayToCartographicArray(positions);
-		for(var i = 0; i < data.coords.length; i++){
+		for(var i in data.coords){
 			data.oldHeights.push(data.coords[i].height);
 		}
 		return polygon;
@@ -37,7 +37,7 @@ function init(viewer){
 		return polygon;
 	})
 	.then(dataSource => {
-		for(var i = 0; i < data.coords.length; i++){
+		for(var i in data.coords){
 			data.coords[i].height += data.oldHeights[i];
 		}
 		var myPolygon = dataSource.entities.getById('myPolygonExample');
